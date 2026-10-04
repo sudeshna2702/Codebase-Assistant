@@ -1,63 +1,6 @@
 from pathlib import Path
 from langchain_core.documents import Document
-
-EXTENSION_LANGUAGE_MAPPING = {
-    # Python
-    ".py": "python",
-
-    # JavaScript / TypeScript / React
-    ".js": "javascript",
-    ".jsx": "javascript",
-    ".mjs": "javascript",
-    ".cjs": "javascript",
-    ".ts": "typescript",
-    ".tsx": "typescript",
-
-    # Java
-    ".java": "java",
-
-    # PHP
-    ".php": "php",
-
-    # C / C++
-    ".c": "c",
-    ".h": "c/cpp",
-    ".cpp": "cpp",
-    ".hpp": "cpp",
-
-    # C#
-    ".cs": "csharp",
-
-    # Go
-    ".go": "go",
-
-    # Rust
-    ".rs": "rust",
-
-    # Kotlin
-    ".kt": "kotlin",
-    ".kts": "kotlin",
-
-    # Swift
-    ".swift": "swift",
-
-    # Ruby
-    ".rb": "ruby",
-
-    # Web
-    ".html": "html",
-    ".css": "css",
-    ".scss": "scss",
-
-    # Shell
-    ".sh": "shell",
-
-    # Markdown
-    ".md": "markdown",
-
-    # JSON
-    ".json": "json",
-}
+from Services.chunker.language_config import get_language_from_extension
 
 
 def load_documents(file_paths : list[Path], root_path: Path) -> list[Document]:
@@ -92,7 +35,7 @@ def load_file(file_path : Path, root_path : Path) -> Document|None:
 
 def get_file_metadata(file_path : Path, root_path: Path) -> dict:
     file_stat = file_path.stat()
-    language = EXTENSION_LANGUAGE_MAPPING.get(file_path.suffix.lower(), "unknown")
+    language = get_language_from_extension(file_path.suffix.lower())
 
     return  {
         "file_name": file_path.name,
