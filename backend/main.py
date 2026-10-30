@@ -3,6 +3,7 @@ from responseStructures.response_structure import testResponse, folderRequest
 from Services.file_extractor import extract_file
 from langchain_core.documents import Document
 from Services.doc_loader import load_documents
+from Services.chunker.code_chunker import chunk_all_documents
 from pathlib import Path
 
 app = FastAPI()
@@ -52,6 +53,10 @@ def process_folder_data(req : folderRequest):
 
     print("\nTotal files:", len(files))
     print("Total documents:", len(documents))
+
+    # Chunking
+    chunk_all_documents(documents)
+
 
     return {
         "response":"Server got the folder!!"
